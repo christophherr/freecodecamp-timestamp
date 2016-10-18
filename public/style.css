@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+    margin: 0 auto;
+    background: #dad7d7;
+}
+
+h1 {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 42px;
+    color: blue;
+}
+
+h2 {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 30px;
+}
+
+p {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 20px;
+}
+
+pre {
+    font-family: Courier, Arial, sans-serif;
+    font-size: 20px;
+}
