@@ -1,39 +1,37 @@
-var express = require('express');
-var moment = require('moment');
-var path = require('path');
+/* eslint import/unambiguous: 0 */
+const express = require('express'),
+    moment = require('moment'),
+    path = require('path'),
+    app = express();
 
+app.set('port', process.env.PORT || 5000);
 
-var app = express();
+app.use('/assets', express.static(path.join(__dirname, '/public')));
 
-app.set('port', process.env.PORT);
-
-app.use('/assets', express.static(__dirname + '/public'));
-
+// Not quite sure why... I'm not using it in index.html
+// and haven't created a template for the json response...
 app.set('view engine', 'ejs');
 
-app.get('/', function(req, res) {
-       res.render('index');
+app.get('/', (req, res) => {
+    res.render('index');
 });
 
-app.get('/:timestamp', function (req,res) {
+app.get('/:timestamp', (req, res) => {
+    // Convert user input into a natural date.
+    let time = moment(req.params.timestamp, 'MMMM DD, YYYY', true);
 
-    var time = moment(req.params.timestamp, 'MMMM DD, YYYY', true);
-    
-    if ( ! time.isValid() ) {
+    // If it's not a natural date, convert it to a unix date.
+    if (!time.isValid()) {
         time = moment.unix(req.params.timestamp);
     }
-    
-    if ( ! time.isValid() ) {
-        res.json({'natural': null, 'unix': null});
+    // If it's also not a unix date (still invalid), return null.
+    if (!time.isValid()) {
+        res.json({ natural: null, unix: null });
     }
 
-    
-    res.json({'natural': time.format('MMMM DD, YYYY'), 'unix': time.format('X') });
-
+    res.json({ natural: time.format('MMMM DD, YYYY'), unix: time.format('X') });
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node.js Server is listening on port ' + app.get('port'));
-  });
-    
-    
+app.listen(app.get('port'), () => {
+    console.log('Node.js Server is listening on port ' + app.get('port'));
+});
